@@ -593,31 +593,6 @@ run(function()
 				entitylib.refresh()
 			end
 
-			if whitelist.textdata ~= whitelist.olddata then
-				if whitelist.data.Announcement.expiretime > os.time() then
-					local targets = whitelist.data.Announcement.targets == 'all' and {tostring(lplr.UserId)} or targets:split(',')
-					if table.find(targets, tostring(lplr.UserId)) then
-						local hint = Instance.new('Hint')
-						hint.Text = 'VAPE ANNOUNCEMENT: '..whitelist.data.Announcement.text
-						hint.Parent = workspace
-						game:GetService('Debris'):AddItem(hint, 20)
-					end
-				end
-				whitelist.olddata = whitelist.textdata
-				pcall(function()
-					writefile('newvape/profiles/whitelist.json', whitelist.textdata)
-				end)
-			end
-
-			if whitelist.data.KillVape then
-				vape:Uninject()
-				return true
-			end
-
-			if whitelist.data.BlacklistedUsers[tostring(lplr.UserId)] then
-				task.spawn(lplr.kick, lplr, whitelist.data.BlacklistedUsers[tostring(lplr.UserId)])
-				return true
-			end
 		end
 	end
 
