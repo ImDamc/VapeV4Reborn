@@ -14,7 +14,7 @@ end
 local function downloadFile(path, func)
 	if not isfile(path) then
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/'..readfile('newvape/profiles/commit.txt')..'/'..select(1, path:gsub('newvape/', '')), true)
+			return game:HttpGet('https://raw.githubusercontent.com/ImDamc/VapeV4Reborn'..readfile('newvape/profiles/commit.txt')..'/'..select(1, path:gsub('newvape/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error(res)
@@ -546,54 +546,7 @@ run(function()
 	end
 
 	function whitelist:update(first)
-		local suc = pcall(function()
-			local _, subbed = pcall(function()
-				return game:HttpGet('https://github.com/7GrandDadPGN/whitelists')
-			end)
-			local commit = subbed:find('currentOid')
-			commit = commit and subbed:sub(commit + 13, commit + 52) or nil
-			commit = commit and #commit == 40 and commit or 'main'
-			whitelist.textdata = game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/whitelists/'..commit..'/PlayerWhitelist.json', true)
-		end)
-		if not suc or not hash or not whitelist.get then return true end
-		whitelist.loaded = true
-
-		if not first or whitelist.textdata ~= whitelist.olddata then
-			if not first then
-				whitelist.olddata = isfile('newvape/profiles/whitelist.json') and readfile('newvape/profiles/whitelist.json') or nil
-			end
-
-			local suc, res = pcall(function()
-				return httpService:JSONDecode(whitelist.textdata)
-			end)
-
-			whitelist.data = suc and type(res) == 'table' and res or whitelist.data
-			whitelist.localprio = whitelist:get(lplr)
-
-			for _, v in whitelist.data.WhitelistedUsers do
-				if v.tags then
-					for _, tag in v.tags do
-						tag.color = Color3.fromRGB(unpack(tag.color))
-					end
-				end
-			end
-
-			if not whitelist.connection then
-				whitelist.connection = playersService.PlayerAdded:Connect(function(v)
-					whitelist:playeradded(v, true)
-				end)
-				vape:Clean(whitelist.connection)
-			end
-
-			for _, v in playersService:GetPlayers() do
-				whitelist:playeradded(v)
-			end
-
-			if entitylib.Running and vape.Loaded then
-				entitylib.refresh()
-			end
-
-		end
+		
 	end
 
 	whitelist.commands = {
